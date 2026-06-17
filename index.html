@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Bioinformatics 21 Days — R + Python, zero to professional</title>
+<meta name="description" content="A 21-day, hands-on bioinformatics study site with R + Python, quizzes, YouTube playlists, GitHub repos, Reddit threads, and 0→pro case studies. Designed for the infectious-pathogen IVD R&D context.">
+<link rel="stylesheet" href="assets/styles.css">
+<link rel="icon" href="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><circle cx='32' cy='32' r='30' fill='%234cc9f0'/><path d='M14 44c8-10 14-10 22-22m-22 0c8 12 14 12 22 22' stroke='%23fff' stroke-width='4' fill='none' stroke-linecap='round'/></svg>">
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a class="brand" href="index.html"><span class="logo"></span>Bioinformatics · 21 Days</a>
+    <div class="nav-links">
+      <a class="active" href="index.html">Home</a>
+      <a href="resources.html">Resources</a>
+      <a href="case-studies.html">Case Studies</a>
+      <a href="quiz.html">Quiz Arena</a>
+      <a href="blog.html">Blog</a>
+      <button id="themeToggle" class="theme-toggle" type="button">☀️ Light</button>
+    </div>
+  </div>
+</nav>
+
+<header class="hero">
+  <h1>21 Days · 0 → Professional<br>Bioinformatics with R + Python</h1>
+  <p>An interactive, self-paced study site built around a real R&D context: infectious-pathogen diagnostics. Every day has objectives, YouTube videos, reading, hands-on tasks, an interactive quiz, GitHub repos, Reddit threads, and a case study.</p>
+  <div class="cta">
+    <a class="btn" href="day.html?day=1">▶ Start Day 1</a>
+    <a class="btn ghost" href="resources.html">Browse Resources</a>
+    <a class="btn ghost" href="case-studies.html">Read Case Studies</a>
+  </div>
+</header>
+
+<main class="container">
+
+  <section class="block">
+    <div class="row-between">
+      <h2 style="margin:0">📈 Your Progress</h2>
+      <button id="resetProgress" class="btn small ghost" type="button">Reset progress</button>
+    </div>
+    <div id="progressBar" class="progress-wrap">
+      <div class="progress bar"><div></div></div>
+      <div class="progress-meta">
+        <span class="meta-count">0 / 21 days complete</span>
+        <span class="meta-pct">0%</span>
+      </div>
+    </div>
+    <p class="text-soft" style="margin:6px 0 0">Progress is saved in your browser (localStorage). It is not uploaded anywhere.</p>
+  </section>
+
+  <section class="block">
+    <h2>🗺 Curriculum overview</h2>
+    <div class="section-row">
+      <div>
+        <h3 style="margin:0 0 6px">Week 1 · Foundations</h3>
+        <p class="text-soft" style="margin:0">Days 1–7. What bioinformatics is, biology refresher, file formats, command line, public databases, alignment, phylogenetics.</p>
+      </div>
+      <div>
+        <h3 style="margin:0 0 6px">Week 2 · R for Biology</h3>
+        <p class="text-soft" style="margin:0">Days 8–14. R + Bioconductor, dplyr/data.table, ggplot2, Biostrings/GenomicRanges, DESeq2, Seurat, variants.</p>
+      </div>
+    </div>
+    <div class="spacer"></div>
+    <div class="section-row">
+      <div>
+        <h3 style="margin:0 0 6px">Week 3 · Python &amp; Professional</h3>
+        <p class="text-soft" style="margin:0">Days 15–21. Biopython, pandas, Snakemake/Nextflow, scikit-learn, AlphaFold/ESM, Docker, capstone.</p>
+      </div>
+      <div>
+        <h3 style="margin:0 0 6px">How each day works</h3>
+        <p class="text-soft" style="margin:0">≈2–3 hours: objectives → videos &amp; reading → 4–5 hands-on tasks → 5-question quiz → GitHub repo &amp; Reddit thread → case study.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="block">
+    <h2>📅 The 21 days</h2>
+    <p class="text-soft" style="margin:-6px 0 14px">Click any card to start. Tap the circle on a card to mark it done (you can also mark it done from inside the day page).</p>
+    <div class="grid" id="dayGrid"></div>
+  </section>
+
+  <section class="block">
+    <h2>🧬 Why this curriculum</h2>
+    <p>This site was built to accompany R&D work on infectious-pathogen <em>in-vitro diagnostics</em> (IVDs) — the kind of project that combines microbiology, molecular biology, and modern data science. The 21 days are sequenced so that by the end you can read primer-design literature, run DESeq2 on a host-response dataset, build a Snakemake pipeline for pathogen detection, and ship the whole thing to GitHub.</p>
+    <p class="text-soft">Stack covered: R (Bioconductor, DESeq2, Seurat, Biostrings, GenomicRanges, ggplot2), Python (Biopython, pandas, scikit-learn, ESM, Snakemake), shell (samtools, bcftools, bedtools), and the canonical public databases (NCBI, Ensembl, UniProt, PDB).</p>
+  </section>
+
+</main>
+
+<footer class="foot">
+  Built for self-study · MIT license · Designed to be published as a static site on GitHub Pages.
+</footer>
+
+<script src="assets/days-data.js"></script>
+<script src="assets/main.js"></script>
+</body>
+</html>

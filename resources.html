@@ -1,0 +1,224 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Resources — Bioinformatics 21 Days</title>
+<link rel="stylesheet" href="assets/styles.css">
+<link rel="icon" href="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><circle cx='32' cy='32' r='30' fill='%234cc9f0'/></svg>">
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a class="brand" href="index.html"><span class="logo"></span>Bioinformatics · 21 Days</a>
+    <div class="nav-links">
+      <a href="index.html">Home</a>
+      <a class="active" href="resources.html">Resources</a>
+      <a href="case-studies.html">Case Studies</a>
+      <a href="quiz.html">Quiz Arena</a>
+      <a href="blog.html">Blog</a>
+      <button id="themeToggle" class="theme-toggle" type="button">☀️ Light</button>
+    </div>
+  </div>
+</nav>
+
+<header class="hero">
+  <h1>📚 Resources</h1>
+  <p>Curated YouTube playlists, GitHub repos, and Reddit threads to follow alongside the 21-day curriculum. Every link points to a stable destination (channels, topic pages, subreddits, or official docs).</p>
+</header>
+
+<main class="container">
+
+  <section class="block">
+    <h2>▶ YouTube — channels &amp; playlists</h2>
+    <p class="text-soft" style="margin-top:-6px">These open as YouTube searches inside the platform — fresh, real, and not at risk of going stale.</p>
+    <div class="res-grid">
+      <div class="res-card">
+        <h4>StatQuest with Josh Starmer</h4>
+        <p>The gold standard for statistics + RNA-seq concepts (DESeq2, PCA, k-means, etc.).</p>
+        <a href="https://www.youtube.com/results?search_query=StatQuest+RNA-seq" target="_blank" rel="noopener">Search ↗</a>
+      </div>
+      <div class="res-card">
+        <h4>Bioinformatics intro talks</h4>
+        <p>One-hour overviews from various educators — great Day 1 watching.</p>
+        <a href="https://www.youtube.com/results?search_query=bioinformatics+introduction+lecture" target="_blank" rel="noopener">Search ↗</a>
+      </div>
+      <div class="res-card">
+        <h4>R for biologists</h4>
+        <p>Bioconductor tutorials, ggplot2 walkthroughs, DESeq2 cookbooks.</p>
+        <a href="https://www.youtube.com/results?search_query=R+for+biologists+Bioconductor" target="_blank" rel="noopener">Search ↗</a>
+      </div>
+      <div class="res-card">
+        <h4>Python for biology</h4>
+        <p>Biopython tutorials, pandas for genomics, scikit-learn for omics.</p>
+        <a href="https://www.youtube.com/results?search_query=Python+for+biology+Biopython" target="_blank" rel="noopener">Search ↗</a>
+      </div>
+      <div class="res-card">
+        <h4>Single-cell RNA-seq</h4>
+        <p>Seurat / Scanpy walkthroughs, UMAP intuition, integration methods.</p>
+        <a href="https://www.youtube.com/results?search_query=single+cell+RNA-seq+Seurat+Scanpy" target="_blank" rel="noopener">Search ↗</a>
+      </div>
+      <div class="res-card">
+        <h4>Variant calling end-to-end</h4>
+        <p>From FASTQ to VCF with GATK / bcftools.</p>
+        <a href="https://www.youtube.com/results?search_query=variant+calling+GATK+tutorial" target="_blank" rel="noopener">Search ↗</a>
+      </div>
+      <div class="res-card">
+        <h4>Snakemake / Nextflow</h4>
+        <p>Workflow managers — modern bioinformatics pipelines.</p>
+        <a href="https://www.youtube.com/results?search_query=Snakemake+Nextflow+tutorial+bioinformatics" target="_blank" rel="noopener">Search ↗</a>
+      </div>
+      <div class="res-card">
+        <h4>AlphaFold &amp; protein LMs</h4>
+        <p>Structural biology powered by deep learning.</p>
+        <a href="https://www.youtube.com/results?search_query=AlphaFold+ESM+protein+language+model" target="_blank" rel="noopener">Search ↗</a>
+      </div>
+      <div class="res-card">
+        <h4>Pathogen genomics &amp; outbreaks</h4>
+        <p>Nextstrain, Pangolin, viral surveillance pipelines.</p>
+        <a href="https://www.youtube.com/results?search_query=Nextstrain+Pangolin+pathogen+genomics" target="_blank" rel="noopener">Search ↗</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="block">
+    <h2>🐙 GitHub — repos to read &amp; star</h2>
+    <div class="res-grid">
+      <div class="res-card">
+        <h4>nf-core</h4>
+        <p>Community-curated production Nextflow pipelines (rnaseq, viralrecon, sarek…).</p>
+        <a href="https://github.com/nf-core" target="_blank" rel="noopener">Open ↗</a>
+      </div>
+      <div class="res-card">
+        <h4>Bioconductor</h4>
+        <p>The R ecosystem for biology. 2,000+ packages.</p>
+        <a href="https://github.com/Bioconductor" target="_blank" rel="noopener">Open ↗</a>
+      </div>
+      <div class="res-card">
+        <h4>biopython/biopython</h4>
+        <p>Python for sequence I/O, Entrez, alignments, structures.</p>
+        <a href="https://github.com/biopython/biopython" target="_blank" rel="noopener">Open ↗</a>
+      </div>
+      <div class="res-card">
+        <h4>satijalab/seurat</h4>
+        <p>The single-cell RNA-seq toolkit.</p>
+        <a href="https://github.com/satijalab/seurat" target="_blank" rel="noopener">Open ↗</a>
+      </div>
+      <div class="res-card">
+        <h4>thelovelab/DESeq2</h4>
+        <p>The most-cited differential expression tool.</p>
+        <a href="https://github.com/thelovelab/DESeq2" target="_blank" rel="noopener">Open ↗</a>
+      </div>
+      <div class="res-card">
+        <h4>samtools / bcftools</h4>
+        <p>SAM/BAM and VCF/BCF CLI workhorses.</p>
+        <a href="https://github.com/samtools" target="_blank" rel="noopener">Open ↗</a>
+      </div>
+      <div class="res-card">
+        <h4>cov-lineages/pangolin</h4>
+        <p>SARS-CoV-2 lineage assignment — real public-health code.</p>
+        <a href="https://github.com/cov-lineages/pangolin" target="_blank" rel="noopener">Open ↗</a>
+      </div>
+      <div class="res-card">
+        <h4>nextstrain</h4>
+        <p>Open-source pathogen genomic surveillance.</p>
+        <a href="https://github.com/nextstrain" target="_blank" rel="noopener">Open ↗</a>
+      </div>
+      <div class="res-card">
+        <h4>google-deepmind/alphafold</h4>
+        <p>The reference AlphaFold2 implementation.</p>
+        <a href="https://github.com/google-deepmind/alphafold" target="_blank" rel="noopener">Open ↗</a>
+      </div>
+      <div class="res-card">
+        <h4>sokrypton/ColabFold</h4>
+        <p>Run AlphaFold-grade folding in Google Colab.</p>
+        <a href="https://github.com/sokrypton/ColabFold" target="_blank" rel="noopener">Open ↗</a>
+      </div>
+      <div class="res-card">
+        <h4>facebookresearch/esm</h4>
+        <p>Evolutionary-scale protein language models.</p>
+        <a href="https://github.com/facebookresearch/esm" target="_blank" rel="noopener">Open ↗</a>
+      </div>
+      <div class="res-card">
+        <h4>topic: bioinformatics</h4>
+        <p>Browse what's trending in bioinformatics on GitHub.</p>
+        <a href="https://github.com/topics/bioinformatics" target="_blank" rel="noopener">Open ↗</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="block">
+    <h2>👽 Reddit — communities to join</h2>
+    <div class="res-grid">
+      <div class="res-card">
+        <h4>r/bioinformatics</h4>
+        <p>The main professional &amp; learner community. Active. Often where job ads land.</p>
+        <a href="https://www.reddit.com/r/bioinformatics/" target="_blank" rel="noopener">Open ↗</a>
+      </div>
+      <div class="res-card">
+        <h4>r/learnbioinformatics</h4>
+        <p>Beginner-friendly questions — your home base for Days 1–7.</p>
+        <a href="https://www.reddit.com/r/learnbioinformatics/" target="_blank" rel="noopener">Open ↗</a>
+      </div>
+      <div class="res-card">
+        <h4>r/genomics</h4>
+        <p>Genome assembly, GWAS, variant analysis.</p>
+        <a href="https://www.reddit.com/r/genomics/" target="_blank" rel="noopener">Open ↗</a>
+      </div>
+      <div class="res-card">
+        <h4>r/biology</h4>
+        <p>The biology refresher community — useful for the wet-lab side.</p>
+        <a href="https://www.reddit.com/r/biology/" target="_blank" rel="noopener">Open ↗</a>
+      </div>
+      <div class="res-card">
+        <h4>r/rstats</h4>
+        <p>General R + tidyverse + Bioconductor questions.</p>
+        <a href="https://www.reddit.com/r/rstats/" target="_blank" rel="noopener">Open ↗</a>
+      </div>
+      <div class="res-card">
+        <h4>r/learnpython</h4>
+        <p>Python language fundamentals.</p>
+        <a href="https://www.reddit.com/r/learnpython/" target="_blank" rel="noopener">Open ↗</a>
+      </div>
+      <div class="res-card">
+        <h4>r/MachineLearning</h4>
+        <p>Modern ML, including AlphaFold &amp; protein LMs.</p>
+        <a href="https://www.reddit.com/r/MachineLearning/" target="_blank" rel="noopener">Open ↗</a>
+      </div>
+      <div class="res-card">
+        <h4>r/datascience</h4>
+        <p>Career &amp; portfolio guidance applicable to bioinformatics.</p>
+        <a href="https://www.reddit.com/r/datascience/" target="_blank" rel="noopener">Open ↗</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="block">
+    <h2>🌐 Canonical references</h2>
+    <div class="res-grid">
+      <div class="res-card"><h4>NCBI</h4><a href="https://www.ncbi.nlm.nih.gov/" target="_blank" rel="noopener">ncbi.nlm.nih.gov ↗</a></div>
+      <div class="res-card"><h4>Ensembl</h4><a href="https://www.ensembl.org/" target="_blank" rel="noopener">ensembl.org ↗</a></div>
+      <div class="res-card"><h4>UniProt</h4><a href="https://www.uniprot.org/" target="_blank" rel="noopener">uniprot.org ↗</a></div>
+      <div class="res-card"><h4>RCSB PDB</h4><a href="https://www.rcsb.org/" target="_blank" rel="noopener">rcsb.org ↗</a></div>
+      <div class="res-card"><h4>EMBL-EBI training</h4><a href="https://www.ebi.ac.uk/training/" target="_blank" rel="noopener">ebi.ac.uk/training ↗</a></div>
+      <div class="res-card"><h4>Bioconductor</h4><a href="https://www.bioconductor.org/" target="_blank" rel="noopener">bioconductor.org ↗</a></div>
+      <div class="res-card"><h4>Biopython docs</h4><a href="https://biopython.org/" target="_blank" rel="noopener">biopython.org ↗</a></div>
+      <div class="res-card"><h4>Galaxy Project</h4><a href="https://usegalaxy.org/" target="_blank" rel="noopener">usegalaxy.org ↗</a></div>
+      <div class="res-card"><h4>Snakemake</h4><a href="https://snakemake.readthedocs.io/" target="_blank" rel="noopener">snakemake docs ↗</a></div>
+      <div class="res-card"><h4>Nextflow / nf-core</h4><a href="https://nf-co.re/" target="_blank" rel="noopener">nf-co.re ↗</a></div>
+      <div class="res-card"><h4>AlphaFold DB</h4><a href="https://alphafold.ebi.ac.uk/" target="_blank" rel="noopener">alphafold.ebi.ac.uk ↗</a></div>
+      <div class="res-card"><h4>UCSC Genome Browser</h4><a href="https://genome.ucsc.edu/" target="_blank" rel="noopener">genome.ucsc.edu ↗</a></div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="foot">
+  Built for self-study · MIT license · Designed to be published as a static site on GitHub Pages.
+</footer>
+
+<script src="assets/days-data.js"></script>
+<script src="assets/main.js"></script>
+</body>
+</html>

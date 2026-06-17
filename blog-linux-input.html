@@ -1,0 +1,329 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Linux 配置韩语和中文输入法 — Bioinformatics 21 Days</title>
+<link rel="stylesheet" href="assets/styles.css">
+<link rel="icon" href="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><circle cx='32' cy='32' r='30' fill='%234cc9f0'/></svg>">
+<style>
+.article { max-width: 820px; margin: 0 auto; }
+.article h2 { margin-top: 48px; padding-bottom: 8px; border-bottom: 1px solid var(--border); }
+.article h3 { margin-top: 32px; color: var(--accent); }
+.article table { width: 100%; border-collapse: collapse; margin: 16px 0; }
+.article th, .article td {
+  padding: 10px 14px;
+  border: 1px solid var(--border);
+  text-align: left;
+}
+.article th { background: var(--bg-soft); font-weight: 600; }
+.article blockquote {
+  border-left: 4px solid var(--accent);
+  margin: 20px 0;
+  padding: 12px 20px;
+  background: var(--bg-soft);
+  border-radius: 0 var(--radius) var(--radius) 0;
+  color: var(--text-soft);
+}
+.article hr { border: none; border-top: 1px solid var(--border); margin: 36px 0; }
+.article ul, .article ol { padding-left: 24px; }
+.article li { margin-bottom: 6px; }
+.blog-back { display: inline-block; margin-bottom: 12px; font-size: .9rem; }
+.blog-header-meta { color: var(--text-soft); font-size: .9rem; margin-bottom: 24px; }
+.blog-header-meta span { margin-right: 16px; }
+.blog-tag {
+  display: inline-block;
+  background: var(--bg-soft);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  padding: 2px 10px;
+  font-size: .78rem;
+  color: var(--accent);
+  margin-right: 6px;
+}
+.step-num {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 28px; height: 28px; border-radius: 50%;
+  background: var(--accent); color: var(--bg); font-weight: 700;
+  font-size: .85rem; margin-right: 8px;
+}
+.tip-box {
+  background: rgba(76,201,240,.08);
+  border: 1px solid rgba(76,201,240,.25);
+  border-radius: var(--radius);
+  padding: 16px 20px;
+  margin: 20px 0;
+}
+.tip-box strong { color: var(--accent); }
+.scenario-card {
+  background: var(--bg-elev);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 20px 24px;
+  margin: 16px 0;
+}
+.scenario-card h4 { margin: 0 0 10px; color: var(--accent-2); }
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a class="brand" href="index.html"><span class="logo"></span>Bioinformatics · 21 Days</a>
+    <div class="nav-links">
+      <a href="index.html">Home</a>
+      <a href="resources.html">Resources</a>
+      <a href="case-studies.html">Case Studies</a>
+      <a href="quiz.html">Quiz Arena</a>
+      <a class="active" href="blog.html">Blog</a>
+      <button id="themeToggle" class="theme-toggle" type="button">☀️ Light</button>
+    </div>
+  </div>
+</nav>
+
+<header class="hero">
+  <h1>Linux 系统配置韩语和中文输入法完全指南</h1>
+  <p>使用 Claude Code 辅助配置 · Fcitx5 + IBus 双方案</p>
+</header>
+
+<main class="container">
+<div class="article">
+
+  <a class="blog-back" href="blog.html">← 返回 Blog 列表</a>
+  <div class="blog-header-meta">
+    <span>📅 2026-06-16</span>
+    <span>✍️ Xiang Fei</span>
+    <span>⏱ ~10 min read</span>
+  </div>
+  <div style="margin-bottom:28px">
+    <span class="blog-tag">Linux</span>
+    <span class="blog-tag">输入法</span>
+    <span class="blog-tag">Claude Code</span>
+    <span class="blog-tag">Fcitx5</span>
+    <span class="blog-tag">IBus</span>
+    <span class="blog-tag">韩语</span>
+    <span class="blog-tag">中文</span>
+  </div>
+
+  <blockquote>
+    作为一个在韩国做研发的中国研究员，日常工作中需要频繁切换中文、韩语和英文输入。本文记录了在 Ubuntu/Linux 系统上配置多语言输入法的完整过程，并分享如何用 Claude Code 来快速排查和解决输入法配置问题。
+  </blockquote>
+
+  <hr>
+
+  <h2>为什么需要配置输入法？</h2>
+  <p>Linux 系统默认通常只有英文输入，如果你需要：</p>
+  <ul>
+    <li>用中文写文档、博客</li>
+    <li>用韩语（한국어）和同事沟通</li>
+    <li>在终端和 IDE 中自由切换语言</li>
+  </ul>
+  <p>就必须安装和配置输入法框架。</p>
+
+  <hr>
+
+  <h2>一、选择输入法框架：IBus vs Fcitx5</h2>
+  <p>Linux 上主流的输入法框架有两个：</p>
+  <table>
+    <thead>
+      <tr><th>特性</th><th>IBus</th><th>Fcitx5</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Ubuntu 默认</td><td>✅ 是</td><td>❌ 否</td></tr>
+      <tr><td>中文支持</td><td>好</td><td>非常好</td></tr>
+      <tr><td>韩语支持</td><td>好</td><td>好</td></tr>
+      <tr><td>配置难度</td><td>简单</td><td>稍复杂</td></tr>
+      <tr><td>推荐场景</td><td>新手</td><td>需要更好中文体验</td></tr>
+    </tbody>
+  </table>
+
+  <div class="tip-box">
+    <strong>💡 推荐：</strong>本文以 Fcitx5 为主，IBus 为辅进行说明。Fcitx5 的中文输入体验明显更好。
+  </div>
+
+  <hr>
+
+  <h2>二、方案 A：使用 Fcitx5（推荐）</h2>
+
+  <h3><span class="step-num">1</span>安装 Fcitx5 及输入法模块</h3>
+  <p>打开终端，运行以下命令（可以直接在 Claude Code 中用 <code>!</code> 前缀执行）：</p>
+<pre><code># 安装 Fcitx5 核心及 GUI 配置工具
+sudo apt update
+sudo apt install -y fcitx5 fcitx5-config-qt
+
+# 安装中文输入法（拼音）
+sudo apt install -y fcitx5-chinese-addons
+
+# 安装韩语输入法（Hangul）
+sudo apt install -y fcitx5-hangul
+
+# 安装前端模块（确保在 GTK/Qt 应用中能正常使用）
+sudo apt install -y fcitx5-frontend-gtk3 fcitx5-frontend-gtk4 fcitx5-frontend-qt5</code></pre>
+
+  <h3><span class="step-num">2</span>设置环境变量</h3>
+  <p>编辑 <code>~/.bashrc</code> 或 <code>~/.profile</code>，添加以下内容：</p>
+<pre><code>export XMODIFIERS=@im=fcitx
+export GTK_IM_MODULE=fcitx
+export QT_IM_MODULE=fcitx</code></pre>
+  <p>然后执行：</p>
+<pre><code>source ~/.bashrc</code></pre>
+
+  <h3><span class="step-num">3</span>设置 Fcitx5 为默认输入法</h3>
+<pre><code>im-config -n fcitx5</code></pre>
+
+  <h3><span class="step-num">4</span>添加输入法</h3>
+  <p>重启系统后，打开 Fcitx5 配置：</p>
+<pre><code>fcitx5-configtool</code></pre>
+  <p>在输入法列表中添加：</p>
+  <ul>
+    <li><strong>Pinyin</strong>（拼音） —— 用于中文输入</li>
+    <li><strong>Hangul</strong>（한글） —— 用于韩语输入</li>
+  </ul>
+
+  <h3><span class="step-num">5</span>切换快捷键</h3>
+  <p>默认切换快捷键为 <code>Ctrl + Space</code>，可以在配置工具中自定义。常用设置：</p>
+  <table>
+    <thead><tr><th>快捷键</th><th>功能</th></tr></thead>
+    <tbody>
+      <tr><td><code>Ctrl + Space</code></td><td>激活 / 关闭输入法</td></tr>
+      <tr><td><code>Super + Space</code> 或 <code>Ctrl + Shift</code></td><td>在不同输入法之间切换</td></tr>
+    </tbody>
+  </table>
+
+  <hr>
+
+  <h2>三、方案 B：使用 IBus（Ubuntu 默认）</h2>
+
+  <h3><span class="step-num">1</span>安装</h3>
+<pre><code># 安装 IBus 核心
+sudo apt install -y ibus
+
+# 安装中文拼音输入法
+sudo apt install -y ibus-libpinyin
+
+# 安装韩语输入法
+sudo apt install -y ibus-hangul</code></pre>
+
+  <h3><span class="step-num">2</span>设置环境变量</h3>
+<pre><code>export XMODIFIERS=@im=ibus
+export GTK_IM_MODULE=ibus
+export QT_IM_MODULE=ibus</code></pre>
+
+  <h3><span class="step-num">3</span>配置</h3>
+<pre><code>ibus-setup</code></pre>
+  <p>在 <strong>Input Method</strong> 标签页中添加：</p>
+  <ul>
+    <li>Chinese → Intelligent Pinyin</li>
+    <li>Korean → Hangul</li>
+  </ul>
+
+  <hr>
+
+  <h2>四、用 Claude Code 排查输入法问题</h2>
+  <p>这是本文的重点！当输入法出问题时，与其在论坛翻帖子，不如直接问 Claude Code。</p>
+
+  <div class="scenario-card">
+    <h4>场景 1：输入法装了但不生效</h4>
+    <p>在 Claude Code 中运行：</p>
+<pre><code>! echo $GTK_IM_MODULE
+! echo $QT_IM_MODULE
+! echo $XMODIFIERS</code></pre>
+    <p>Claude 会帮你检查环境变量是否正确设置。</p>
+  </div>
+
+  <div class="scenario-card">
+    <h4>场景 2：检查输入法是否正确安装</h4>
+<pre><code>! dpkg -l | grep fcitx5</code></pre>
+    <p>或者直接问 Claude："帮我检查系统上 fcitx5 和中韩文输入法是否安装完整"</p>
+  </div>
+
+  <div class="scenario-card">
+    <h4>场景 3：fcitx5 进程没有运行</h4>
+<pre><code>! ps aux | grep fcitx</code></pre>
+    <p>如果没有运行：</p>
+<pre><code>! fcitx5 -d</code></pre>
+  </div>
+
+  <div class="scenario-card">
+    <h4>场景 4：配置文件有问题</h4>
+    <p>告诉 Claude："帮我看看 fcitx5 的配置文件有没有问题"</p>
+    <p>Claude Code 会读取 <code>~/.config/fcitx5/</code> 下的配置文件并帮你分析。</p>
+  </div>
+
+  <div class="scenario-card">
+    <h4>场景 5：自动修复脚本</h4>
+    <p>你甚至可以让 Claude Code 帮你写一个一键修复脚本：</p>
+    <p>"写一个脚本，自动检测并修复 Linux 上的 fcitx5 中文韩文输入法配置"</p>
+  </div>
+
+  <hr>
+
+  <h2>五、常见问题 FAQ</h2>
+
+  <h3>Q: 重启后输入法消失了？</h3>
+  <p>确保 fcitx5 在开机时自动启动：</p>
+<pre><code># 添加到自动启动
+cp /usr/share/applications/org.fcitx.Fcitx5.desktop ~/.config/autostart/</code></pre>
+
+  <h3>Q: 某些应用里无法使用输入法？</h3>
+  <p>检查该应用是 GTK 还是 Qt 应用，确保安装了对应的前端模块：</p>
+<pre><code>sudo apt install -y fcitx5-frontend-gtk3 fcitx5-frontend-qt5</code></pre>
+
+  <h3>Q: Snap 或 Flatpak 应用中输入法不工作？</h3>
+  <p>Snap/Flatpak 应用有沙箱限制，可能需要额外配置：</p>
+<pre><code># 对于 Snap 应用
+sudo snap connect &lt;app&gt;:fcitx5</code></pre>
+
+  <h3>Q: 如何在 VS Code 中使用输入法？</h3>
+  <p>VS Code 使用 Electron（基于 Chromium），需要确保 <code>GTK_IM_MODULE</code> 环境变量已设置。如果仍然不行：</p>
+<pre><code># 启动 VS Code 时指定输入法
+GTK_IM_MODULE=fcitx code</code></pre>
+
+  <hr>
+
+  <h2>六、我的实际配置总结</h2>
+  <p>作为在韩国工作的 IVD 研发人员，我的日常配置是：</p>
+  <table>
+    <thead><tr><th>快捷键</th><th>功能</th></tr></thead>
+    <tbody>
+      <tr><td><code>Ctrl + Space</code></td><td>激活输入法</td></tr>
+      <tr><td><code>Ctrl + Shift</code></td><td>切换中 / 韩 / 英</td></tr>
+    </tbody>
+  </table>
+  <p>输入法列表顺序：</p>
+  <ol>
+    <li>English（英文）</li>
+    <li>Pinyin（中文拼音）</li>
+    <li>Hangul（韩语）</li>
+  </ol>
+
+  <hr>
+
+  <h2>总结</h2>
+  <p>在 Linux 上配置多语言输入法并不复杂，关键步骤就三个：</p>
+  <ol>
+    <li><strong>安装</strong> —— <code>apt install</code> 输入法框架和语言模块</li>
+    <li><strong>配置环境变量</strong> —— 确保 <code>IM_MODULE</code> 正确指向你的输入法框架</li>
+    <li><strong>添加输入法</strong> —— 在配置工具中添加拼音和韩语</li>
+  </ol>
+  <p>而有了 Claude Code 的帮助，排查问题变得更加高效 —— 直接用自然语言描述问题，让 AI 帮你检查系统状态、分析配置、甚至生成修复脚本。</p>
+
+  <div class="tip-box">
+    <strong>💡 小贴士：</strong>如果你也是在韩国或海外做生信/IVD 研发的中国研究员，推荐用 Fcitx5 + Claude Code 的组合。遇到任何 Linux 配置问题，直接在终端里问 Claude，比翻论坛快 10 倍。
+  </div>
+
+  <hr>
+  <p class="text-soft" style="text-align:center;margin-top:40px">
+    <em>写于 2026 年 6 月 16 日 · Ubuntu Linux · Claude Code + Fcitx5</em>
+  </p>
+
+</div>
+</main>
+
+<footer class="foot">
+  Built for self-study · MIT license · Designed to be published as a static site on GitHub Pages.
+</footer>
+
+<script src="assets/main.js"></script>
+</body>
+</html>

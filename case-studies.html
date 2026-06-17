@@ -1,0 +1,254 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Case Studies — Bioinformatics 21 Days</title>
+<link rel="stylesheet" href="assets/styles.css">
+<link rel="icon" href="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><circle cx='32' cy='32' r='30' fill='%234cc9f0'/></svg>">
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a class="brand" href="index.html"><span class="logo"></span>Bioinformatics · 21 Days</a>
+    <div class="nav-links">
+      <a href="index.html">Home</a>
+      <a href="resources.html">Resources</a>
+      <a class="active" href="case-studies.html">Case Studies</a>
+      <a href="quiz.html">Quiz Arena</a>
+      <a href="blog.html">Blog</a>
+      <button id="themeToggle" class="theme-toggle" type="button">☀️ Light</button>
+    </div>
+  </div>
+</nav>
+
+<header class="hero">
+  <h1>🧬 Case Studies · 0 → Professional</h1>
+  <p>Real-world bioinformatics walk-throughs grouped by level. Every case is independent — read in any order — but they get harder.</p>
+</header>
+
+<main class="container">
+
+  <section class="block">
+    <h2>Level 0 · Zero — first contact with biology data</h2>
+
+    <div class="case">
+      <span class="level lvl-0">Level 0</span>
+      <h3 style="margin:0 0 6px">Read a reference genome in two lines</h3>
+      <p>Pull SARS-CoV-2 (NC_045512) from NCBI and count its bases. This is the simplest possible bioinformatics task — and exactly what a diagnostic developer does before designing assays.</p>
+<pre><code># Python
+from Bio import Entrez, SeqIO
+Entrez.email = "you@example.com"
+h = Entrez.efetch(db="nuccore", id="NC_045512", rettype="fasta", retmode="text")
+rec = SeqIO.read(h, "fasta")
+print(rec.id, len(rec.seq))   # NC_045512.2 29903
+
+# R
+library(Biostrings)
+g <- readDNAStringSet(url("https://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi?db=nuccore&id=NC_045512&rettype=fasta&retmode=text"))
+print(width(g))</code></pre>
+      <p class="text-soft">Skills: NCBI Entrez, FASTA, Biopython, Biostrings.</p>
+    </div>
+
+    <div class="case">
+      <span class="level lvl-0">Level 0</span>
+      <h3 style="margin:0 0 6px">Compute GC content of a microbial genome</h3>
+      <p>GC content tells you about base composition (and PCR design constraints). One-liner in the shell + one in R.</p>
+<pre><code># Shell
+grep -v '^>' genome.fa | tr -d '\n' | awk '{
+  total=length($0);
+  gc=gsub(/[GCgc]/,"&",$0);
+  printf "GC: %.2f%%\n", 100*gc/total }'
+
+# R
+library(Biostrings)
+g <- readDNAStringSet("genome.fa")
+af <- alphabetFrequency(g, as.prob=TRUE, baseOnly=TRUE)
+print((af[,"G"] + af[,"C"]) * 100)</code></pre>
+    </div>
+  </section>
+
+  <section class="block">
+    <h2>Level 1 · Beginner — first useful pipeline</h2>
+
+    <div class="case">
+      <span class="level lvl-1">Level 1</span>
+      <h3 style="margin:0 0 6px">FASTQ QC + adapter trimming</h3>
+      <p>Before anything else: check the data. Run FastQC, trim adapters with fastp, look at the report. If you can't do this, no downstream result is trustworthy.</p>
+<pre><code>fastqc reads_1.fq.gz reads_2.fq.gz -o qc/
+fastp -i reads_1.fq.gz -I reads_2.fq.gz \
+      -o trim_1.fq.gz -O trim_2.fq.gz \
+      --detect_adapter_for_pe --html qc/fastp.html
+multiqc qc/</code></pre>
+      <p class="text-soft">Skills: FastQC, fastp, MultiQC, shell.</p>
+    </div>
+
+    <div class="case">
+      <span class="level lvl-1">Level 1</span>
+      <h3 style="margin:0 0 6px">BLAST a primer pair against nr/nt</h3>
+      <p>Before sending primers to the wet lab, confirm specificity. A primer that hits an unintended species is a false positive waiting to happen.</p>
+      <ol>
+        <li>Open NCBI BLAST → primer-BLAST.</li>
+        <li>Enter primer pair; restrict the database to <em>target taxon</em>.</li>
+        <li>Re-run against <em>all organisms</em>: look for off-target hits with ≥18 bp 3'-end match.</li>
+        <li>If off-targets exist, redesign in conserved-yet-unique regions.</li>
+      </ol>
+    </div>
+
+    <div class="case">
+      <span class="level lvl-1">Level 1</span>
+      <h3 style="margin:0 0 6px">Map reads to a pathogen reference</h3>
+<pre><code>bwa-mem2 index reference.fa
+bwa-mem2 mem -t 4 reference.fa trim_1.fq.gz trim_2.fq.gz \
+  | samtools sort -@4 -o sample.bam -
+samtools index sample.bam
+samtools flagstat sample.bam</code></pre>
+      <p class="text-soft">Skills: alignment, BAM, flagstat. If &lt;50% of reads map to your pathogen, your sample is mostly host — that's diagnostic information by itself.</p>
+    </div>
+  </section>
+
+  <section class="block">
+    <h2>Level 2 · Intermediate — research-grade analysis</h2>
+
+    <div class="case">
+      <span class="level lvl-2">Level 2</span>
+      <h3 style="margin:0 0 6px">Differential expression with DESeq2</h3>
+      <p>From a counts matrix and metadata, identify genes upregulated during infection.</p>
+<pre><code>library(DESeq2)
+dds <- DESeqDataSetFromMatrix(countData = counts,
+                              colData   = meta,
+                              design    = ~ batch + condition)
+dds <- DESeq(dds)
+res <- results(dds, contrast = c("condition","infected","control"))
+res <- lfcShrink(dds, coef = "condition_infected_vs_control", type = "apeglm")
+top <- as.data.frame(res) |>
+  tibble::rownames_to_column("gene") |>
+  dplyr::arrange(padj) |> head(50)
+write.csv(top, "top50.csv", row.names=FALSE)</code></pre>
+      <p class="text-soft">Skills: DESeq2, lfcShrink, multiple-testing correction, tidyverse.</p>
+    </div>
+
+    <div class="case">
+      <span class="level lvl-2">Level 2</span>
+      <h3 style="margin:0 0 6px">Variant calling against a pathogen reference</h3>
+<pre><code>bcftools mpileup -f reference.fa sample.bam \
+  | bcftools call -mv -Oz -o sample.vcf.gz
+bcftools index sample.vcf.gz
+bcftools view -f PASS -i 'QUAL>=30 && INFO/DP>=20' sample.vcf.gz \
+  > sample.filtered.vcf
+bcftools consensus -f reference.fa sample.vcf.gz > consensus.fa</code></pre>
+      <p class="text-soft">Skills: bcftools, mpileup, filter, consensus. This is half of every viral-sequencing pipeline.</p>
+    </div>
+
+    <div class="case">
+      <span class="level lvl-2">Level 2</span>
+      <h3 style="margin:0 0 6px">Phylogeny of patient isolates</h3>
+      <p>Given consensus sequences from 50 patients, build a tree and look for clades — useful for detecting transmission clusters and tracking the introduction of new variants into an assay's coverage.</p>
+<pre><code>cat consensus_*.fa &gt; isolates.fa
+mafft --auto isolates.fa &gt; aln.fa
+iqtree -s aln.fa -m TEST -bb 1000 -nt AUTO
+# open aln.fa.treefile in iTOL</code></pre>
+    </div>
+  </section>
+
+  <section class="block">
+    <h2>Level 3 · Professional — production-grade workflows</h2>
+
+    <div class="case">
+      <span class="level lvl-3">Level 3</span>
+      <h3 style="margin:0 0 6px">A reproducible Snakemake pipeline</h3>
+      <p>This is the kind of pipeline an IVD R&amp;D team would run nightly on new sequencing batches. Containerized, parameterized, auditable.</p>
+<pre><code># Snakefile (excerpt)
+SAMPLES = config["samples"]
+
+rule all:
+    input: expand("results/{s}/consensus.fa", s=SAMPLES)
+
+rule trim:
+    input:  r1="raw/{s}_R1.fq.gz", r2="raw/{s}_R2.fq.gz"
+    output: r1="trim/{s}_R1.fq.gz", r2="trim/{s}_R2.fq.gz"
+    conda:  "envs/qc.yaml"
+    shell:
+        "fastp -i {input.r1} -I {input.r2} "
+        "-o {output.r1} -O {output.r2} --detect_adapter_for_pe"
+
+rule align:
+    input:  r1="trim/{s}_R1.fq.gz", r2="trim/{s}_R2.fq.gz",
+            ref="ref/pathogen.fa"
+    output: "bam/{s}.bam"
+    conda:  "envs/align.yaml"
+    shell:
+        "bwa-mem2 mem -t 4 {input.ref} {input.r1} {input.r2} | "
+        "samtools sort -o {output} -"
+
+rule consensus:
+    input:  bam="bam/{s}.bam", ref="ref/pathogen.fa"
+    output: "results/{s}/consensus.fa"
+    conda:  "envs/call.yaml"
+    shell:
+        "bcftools mpileup -f {input.ref} {input.bam} | "
+        "bcftools call -mv -Oz -o results/{wildcards.s}/v.vcf.gz && "
+        "bcftools index results/{wildcards.s}/v.vcf.gz && "
+        "bcftools consensus -f {input.ref} results/{wildcards.s}/v.vcf.gz "
+        "&gt; {output}"</code></pre>
+      <p class="text-soft">Skills: workflow design, conda envs per rule, wildcards, audit trails. Run with <code>snakemake --cores 8 --use-conda</code>.</p>
+    </div>
+
+    <div class="case">
+      <span class="level lvl-3">Level 3</span>
+      <h3 style="margin:0 0 6px">Host-response classifier (viral vs bacterial)</h3>
+      <p>Train a regularized logistic regression on host blood-transcriptome features; aim for cross-validated ROC-AUC. This is the kind of analysis behind next-generation diagnostics that complement pathogen detection with host signatures.</p>
+<pre><code>from sklearn.pipeline import Pipeline
+from sklearn.preprocessing import StandardScaler
+from sklearn.linear_model import LogisticRegressionCV
+from sklearn.model_selection import StratifiedKFold, cross_val_score
+
+X, y = load_features()    # genes x samples, binary labels
+pipe = Pipeline([
+    ("scale", StandardScaler()),
+    ("clf",   LogisticRegressionCV(penalty="l2", cv=5, max_iter=2000)),
+])
+cv = StratifiedKFold(5, shuffle=True, random_state=0)
+auc = cross_val_score(pipe, X, y, cv=cv, scoring="roc_auc")
+print(f"AUC = {auc.mean():.3f} ± {auc.std():.3f}")</code></pre>
+      <p class="text-soft">Skills: pipelines, leakage-safe CV, ROC-AUC. Always wrap scaling inside the Pipeline so it's re-fit per fold.</p>
+    </div>
+
+    <div class="case">
+      <span class="level lvl-3">Level 3</span>
+      <h3 style="margin:0 0 6px">Predicting a pathogen surface protein with ColabFold</h3>
+      <p>For a newly-sequenced antigen, predicted structure helps reagent design (e.g., antibody / aptamer targeting). Run ColabFold, inspect pLDDT, identify well-folded epitopes.</p>
+      <ol>
+        <li>Open ColabFold in Google Colab; paste the protein FASTA.</li>
+        <li>Run the MSA + folding cells (free Colab GPU is fine for &lt; 400 residues).</li>
+        <li>Download the PDB + the per-residue pLDDT plot.</li>
+        <li>Open the PDB in <a href="https://molstar.org/viewer/" target="_blank" rel="noopener">Mol* viewer</a>; identify the highest-confidence surface loops.</li>
+        <li>Use these as candidate epitopes for reagent design discussions with the wet lab team.</li>
+      </ol>
+    </div>
+
+    <div class="case">
+      <span class="level lvl-3">Level 3</span>
+      <h3 style="margin:0 0 6px">Surveillance: detecting primer-binding-site mutations at scale</h3>
+      <p>For an established diagnostic, monitor public sequence repositories for mutations under the primer binding sites. If a mutation crosses an allele-frequency threshold in circulating sequences, alert the assay team.</p>
+      <ol>
+        <li>Download recent GISAID / NCBI Virus consensus sequences for the target pathogen.</li>
+        <li>For each sequence, locate the primer binding region (e.g., <code>vmatchPattern</code> with a small mismatch budget).</li>
+        <li>Compute per-position substitution frequency.</li>
+        <li>Track over time; trigger an alert if &gt; 5% of recent sequences carry a mutation under the 3' end of the primer.</li>
+        <li>Output: a Quarto/RMarkdown weekly report.</li>
+      </ol>
+      <p class="text-soft">This is the bridge between bioinformatics and real diagnostic-product surveillance.</p>
+    </div>
+  </section>
+
+</main>
+
+<footer class="foot">
+  Built for self-study · MIT license · Designed to be published as a static site on GitHub Pages.
+</footer>
+
+<script src="assets/main.js"></script>
+</body>
+</html>

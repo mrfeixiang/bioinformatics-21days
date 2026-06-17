@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Quiz Arena — Bioinformatics 21 Days</title>
+<link rel="stylesheet" href="assets/styles.css">
+<link rel="icon" href="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><circle cx='32' cy='32' r='30' fill='%234cc9f0'/></svg>">
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a class="brand" href="index.html"><span class="logo"></span>Bioinformatics · 21 Days</a>
+    <div class="nav-links">
+      <a href="index.html">Home</a>
+      <a href="resources.html">Resources</a>
+      <a href="case-studies.html">Case Studies</a>
+      <a class="active" href="quiz.html">Quiz Arena</a>
+      <a href="blog.html">Blog</a>
+      <button id="themeToggle" class="theme-toggle" type="button">☀️ Light</button>
+    </div>
+  </div>
+</nav>
+
+<header class="hero">
+  <h1>🧠 Quiz Arena</h1>
+  <p>20 questions sampled randomly across all 21 days. Click any option to lock in your answer; the correct choice + explanation reveal immediately.</p>
+  <div class="cta">
+    <button id="reshuffle" class="btn" type="button">🔀 Reshuffle</button>
+    <a class="btn ghost" href="index.html">← Back to curriculum</a>
+  </div>
+</header>
+
+<main class="container">
+
+  <section class="block">
+    <h2>Mixed quiz</h2>
+    <p class="text-soft" style="margin-top:-6px">Each question is labelled with its source day. Use this to gauge what to revise.</p>
+    <div id="arenaMount"></div>
+  </section>
+
+  <section class="block">
+    <h2>📖 How scoring works</h2>
+    <ul class="bullets">
+      <li>Lock in one answer per question by clicking.</li>
+      <li>Correct picks count toward your score; wrong picks don't penalize.</li>
+      <li>Hit <em>Reshuffle</em> for a new random subset.</li>
+      <li>Inside each day, you can also re-take the day-specific quiz for focused practice.</li>
+    </ul>
+  </section>
+
+</main>
+
+<footer class="foot">
+  Built for self-study · MIT license · Designed to be published as a static site on GitHub Pages.
+</footer>
+
+<script src="assets/days-data.js"></script>
+<script src="assets/main.js"></script>
+<script>
+  document.getElementById("reshuffle").addEventListener("click", () => {
+    // re-run quiz arena
+    const mount = document.getElementById("arenaMount");
+    mount.innerHTML = "";
+    if (typeof renderQuizArena === "function") renderQuizArena();
+    else location.reload();
+  });
+</script>
+</body>
+</html>
